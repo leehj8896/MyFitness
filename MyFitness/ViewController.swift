@@ -20,6 +20,8 @@ class ViewController: UIViewController, FSCalendarDelegate, FSCalendarDataSource
     
     var imageData: [[String: Any]] = []
     
+    var selectedDate: String = ""
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
@@ -38,8 +40,14 @@ class ViewController: UIViewController, FSCalendarDelegate, FSCalendarDataSource
         imgCollectionView.collectionViewLayout = flowLayout
         
         picker.delegate = self
+                
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd"
+        let current_date_string = formatter.string(from: Date())
+        selectedDate = current_date_string
     
         let fileNames = getImageFileNames()
+//        print("filenames: \(fileNames)")
         for fileName in fileNames {
             if let image = getSavedImage(named: fileName) {
                 let data: [String: Any] = ["name": fileName, "image": image]
@@ -49,7 +57,7 @@ class ViewController: UIViewController, FSCalendarDelegate, FSCalendarDataSource
         
         let longPress = UILongPressGestureRecognizer(target: self, action: #selector(handleLongPress(sender:)))
         imgCollectionView.addGestureRecognizer(longPress)
-
+        
     }
     
     @objc private func handleLongPress(sender: UILongPressGestureRecognizer) {
@@ -100,7 +108,8 @@ class ViewController: UIViewController, FSCalendarDelegate, FSCalendarDataSource
                 in: .userDomainMask,
                 appropriateFor: nil,
                 create: false
-            )
+            ).appendingPathComponent(selectedDate)
+            
 //            print("documentDirectory", documentDirectory.path)
             // Get the directory contents urls (including subfolders urls)
             let directoryContents = try FileManager.default.contentsOfDirectory(
@@ -118,7 +127,7 @@ class ViewController: UIViewController, FSCalendarDelegate, FSCalendarDataSource
             return fileNames
             
         } catch {
-            print(error)
+//            print(error)
         }
         return []
     }
@@ -161,54 +170,88 @@ class ViewController: UIViewController, FSCalendarDelegate, FSCalendarDataSource
         if let image = info[UIImagePickerController.InfoKey.originalImage] as? UIImage{
 
             let formatter = DateFormatter()
-            formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+            formatter.dateFormat = "HH-mm-ss"
             let current_date_string = formatter.string(from: Date())
             
             imageData.append(["name": "\(current_date_string).png", "image": image])
-            imgCollectionView.reloadData()
             
             saveImage(image: image, named: current_date_string)
-            print("사진 가져옴")
+
+            imgCollectionView.reloadData()
+
+//            print("사진 가져옴")
         }else{
-            print("사진 없음")
+//            print("사진 없음")
         }
         
         picker.dismiss(animated: true, completion: nil)
 
     }
     
-    func saveImage(image: UIImage, named: String) -> Bool {
+    func saveImage(image: UIImage, named: String) {
         
         // 데이터 있으면
-        guard let data = image.jpegData(compressionQuality: 1) ?? image.pngData() else {
-            return false
-        }
+        guard let data = image.jpegData(compressionQuality: 1) ?? image.pngData() else {return}
         // 경로 있으면
-        guard let directory = try? FileManager.default.url(
+//        guard let directory = try? FileManager.default.url(
+//            for: .documentDirectory,
+//            in: .userDomainMask,
+//            appropriateFor: nil,
+//            create: false).appendingPathComponent(selectedDate) as NSURL else {
+//            return false
+//        }
+        
+        let directory = try? FileManager.default.url(
             for: .documentDirectory,
             in: .userDomainMask,
             appropriateFor: nil,
-            create: false) as NSURL else {
-            return false
-        }
+            create: false).appendingPathComponent(selectedDate)
         
+        // 폴더 없으면 생성
+        if !FileManager.default.fileExists(atPath: directory!.path) {
+            do {
+                try FileManager.default.createDirectory(atPath: directory!.path, withIntermediateDirectories: true, attributes: nil)
+            } catch {
+                print(error)
+            }
+        }
+
         // 저장
         do {
-            try data.write(to: directory.appendingPathComponent("\(named).png")!)
-            return true
+//            print("저장 디렉토리: \(directory!.path)")
+            try data.write(to: directory!.appendingPathComponent("\(named).png"))
         } catch {
-            print(error.localizedDescription)
-            return false
+//            print(error.localizedDescription)
+            print(error)
         }
     }
 
     func getSavedImage(named: String) -> UIImage? {
         if let dir = try? FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false) {
-            return UIImage(contentsOfFile: URL(fileURLWithPath: dir.absoluteString).appendingPathComponent(named).path)
+            return UIImage(contentsOfFile: URL(fileURLWithPath: dir.absoluteString).appendingPathComponent(selectedDate).appendingPathComponent(named).path)
         }
         return nil
     }
 
+    func calendar(_ calendar: FSCalendar, didSelect date: Date, at monthPosition: FSCalendarMonthPosition) {
+        
+        // 선택 날짜 변경
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd"
+        let current_date_string = formatter.string(from: date)
+        selectedDate = current_date_string
+        
+        imageData = []
+        let fileNames = getImageFileNames()
+        for fileName in fileNames {
+            if let image = getSavedImage(named: fileName) {
+                let data: [String: Any] = ["name": fileName, "image": image]
+                imageData.append(data)
+            }
+        }
+        
+        imgCollectionView.reloadData()
+    }
     
 //    // 이벤트 추가
 //    func calendar(_ calendar: FSCalendar, numberOfEventsFor date: Date) -> Int {
