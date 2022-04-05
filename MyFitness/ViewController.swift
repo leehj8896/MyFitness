@@ -201,7 +201,7 @@ class ViewController: UIViewController, FSCalendarDelegate, FSCalendarDataSource
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        
+        performSegue(withIdentifier: "exerciseDetail", sender: indexPath.row)
     }
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
@@ -312,9 +312,6 @@ class ViewController: UIViewController, FSCalendarDelegate, FSCalendarDataSource
         }
     }
 
-//    @IBAction func addExercise(_ sender: Any) {
-//    }
-
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         self.view.endEditing(true)
     }
@@ -354,6 +351,15 @@ class ViewController: UIViewController, FSCalendarDelegate, FSCalendarDataSource
 
         // 테이블뷰 리로드
         exerciseTableView.reloadData()
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "exerciseDetail" {
+            if let i = sender as? Int {
+                let nextVC = segue.destination as! ExerciseViewController
+                nextVC.test = exerciseData[i]
+            }
+        }
     }
     
 //    // 이벤트 추가

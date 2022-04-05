@@ -9,18 +9,20 @@ import UIKit
 
 class ExerciseViewController: UIViewController {
 
-    @IBOutlet var txtExerciseName: UITextField!
-    @IBOutlet var txtBody: UITextField!
     @IBOutlet var txtRestTime: UITextField!
     @IBOutlet var txtWeight: UITextField!
     @IBOutlet var txtReps: UITextField!
     
+    @IBOutlet var lblTest: UILabel!
+    var test: String?
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        // Do any additional setup after loading the view.
+        if let t = test {
+            lblTest.text = t
+        }
     }
     
 
