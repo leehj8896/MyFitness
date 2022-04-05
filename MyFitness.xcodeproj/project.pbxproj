@@ -7,18 +7,25 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1E11E61027F9821000AE6A4F /* ExerciseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E11E60F27F9821000AE6A4F /* ExerciseViewController.swift */; };
 		1E2C2E9A27E83F8C00BFC15C /* ImageCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E2C2E9927E83F8C00BFC15C /* ImageCollectionViewCell.swift */; };
+		1E41A8B727F2D4E50010468D /* Model.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 1E41A8B527F2D4E50010468D /* Model.xcdatamodeld */; };
+		1E4FE0D227F3274A001307F2 /* ExerciseTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E4FE0D127F3274A001307F2 /* ExerciseTableViewCell.swift */; };
 		1E5AAC1D2766FAFA0088E65B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E5AAC1C2766FAFA0088E65B /* AppDelegate.swift */; };
 		1E5AAC1F2766FAFA0088E65B /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E5AAC1E2766FAFA0088E65B /* SceneDelegate.swift */; };
 		1E5AAC212766FAFA0088E65B /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E5AAC202766FAFA0088E65B /* ViewController.swift */; };
 		1E5AAC242766FAFA0088E65B /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1E5AAC222766FAFA0088E65B /* Main.storyboard */; };
 		1E5AAC262766FAFA0088E65B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1E5AAC252766FAFA0088E65B /* Assets.xcassets */; };
 		1E5AAC292766FAFA0088E65B /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1E5AAC272766FAFA0088E65B /* LaunchScreen.storyboard */; };
+		1E5EC54927FBFC51001E4021 /* AddExercisePopupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E5EC54827FBFC51001E4021 /* AddExercisePopupViewController.swift */; };
 		3223EDA22B337047F2ABF656 /* Pods_MyFitness.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E451D11DF68CD6BA81AFA824 /* Pods_MyFitness.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		1E11E60F27F9821000AE6A4F /* ExerciseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseViewController.swift; sourceTree = "<group>"; };
 		1E2C2E9927E83F8C00BFC15C /* ImageCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCollectionViewCell.swift; sourceTree = "<group>"; };
+		1E41A8B627F2D4E50010468D /* Model.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Model.xcdatamodel; sourceTree = "<group>"; };
+		1E4FE0D127F3274A001307F2 /* ExerciseTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseTableViewCell.swift; sourceTree = "<group>"; };
 		1E5AAC192766FAFA0088E65B /* MyFitness.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MyFitness.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1E5AAC1C2766FAFA0088E65B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		1E5AAC1E2766FAFA0088E65B /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -27,6 +34,7 @@
 		1E5AAC252766FAFA0088E65B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		1E5AAC282766FAFA0088E65B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		1E5AAC2A2766FAFA0088E65B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		1E5EC54827FBFC51001E4021 /* AddExercisePopupViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddExercisePopupViewController.swift; sourceTree = "<group>"; };
 		9ABEEF86703C2C797CF3960C /* Pods-MyFitness.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MyFitness.debug.xcconfig"; path = "Target Support Files/Pods-MyFitness/Pods-MyFitness.debug.xcconfig"; sourceTree = "<group>"; };
 		E451D11DF68CD6BA81AFA824 /* Pods_MyFitness.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MyFitness.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F6EBA9BCE298EF3FCDA95D92 /* Pods-MyFitness.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MyFitness.release.xcconfig"; path = "Target Support Files/Pods-MyFitness/Pods-MyFitness.release.xcconfig"; sourceTree = "<group>"; };
@@ -81,6 +89,10 @@
 				1E5AAC272766FAFA0088E65B /* LaunchScreen.storyboard */,
 				1E5AAC2A2766FAFA0088E65B /* Info.plist */,
 				1E2C2E9927E83F8C00BFC15C /* ImageCollectionViewCell.swift */,
+				1E41A8B527F2D4E50010468D /* Model.xcdatamodeld */,
+				1E4FE0D127F3274A001307F2 /* ExerciseTableViewCell.swift */,
+				1E11E60F27F9821000AE6A4F /* ExerciseViewController.swift */,
+				1E5EC54827FBFC51001E4021 /* AddExercisePopupViewController.swift */,
 			);
 			path = MyFitness;
 			sourceTree = "<group>";
@@ -209,7 +221,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				1E5AAC212766FAFA0088E65B /* ViewController.swift in Sources */,
+				1E11E61027F9821000AE6A4F /* ExerciseViewController.swift in Sources */,
 				1E5AAC1D2766FAFA0088E65B /* AppDelegate.swift in Sources */,
+				1E5EC54927FBFC51001E4021 /* AddExercisePopupViewController.swift in Sources */,
+				1E41A8B727F2D4E50010468D /* Model.xcdatamodeld in Sources */,
+				1E4FE0D227F3274A001307F2 /* ExerciseTableViewCell.swift in Sources */,
 				1E2C2E9A27E83F8C00BFC15C /* ImageCollectionViewCell.swift in Sources */,
 				1E5AAC1F2766FAFA0088E65B /* SceneDelegate.swift in Sources */,
 			);
@@ -415,6 +431,19 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		1E41A8B527F2D4E50010468D /* Model.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				1E41A8B627F2D4E50010468D /* Model.xcdatamodel */,
+			);
+			currentVersion = 1E41A8B627F2D4E50010468D /* Model.xcdatamodel */;
+			path = Model.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = 1E5AAC112766FAFA0088E65B /* Project object */;
 }

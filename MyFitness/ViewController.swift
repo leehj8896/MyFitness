@@ -7,24 +7,31 @@
 
 import UIKit
 import FSCalendar
+import CoreData
 
-class ViewController: UIViewController, FSCalendarDelegate, FSCalendarDataSource, UICollectionViewDelegate, UICollectionViewDataSource, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+class ViewController: UIViewController, FSCalendarDelegate, FSCalendarDataSource, UICollectionViewDelegate, UICollectionViewDataSource, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITableViewDelegate, UITableViewDataSource, isAbleToReceiveData {
     
+    var container: NSPersistentContainer!
 
     @IBOutlet var calendarView: FSCalendar!
     @IBOutlet var imgCollectionView: UICollectionView!
+    @IBOutlet var exerciseTableView: UITableView!
     
     let picker = UIImagePickerController()
     
     var events: [String] = []
     
     var imageData: [[String: Any]] = []
-    
+    var exerciseData: [String] = []
     var selectedDate: String = ""
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
+        
+        print("메인 view did load")
+        
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        self.container = appDelegate.persistentContainer
         
         calendarView.delegate = self
         calendarView.dataSource = self
@@ -34,6 +41,9 @@ class ViewController: UIViewController, FSCalendarDelegate, FSCalendarDataSource
         
         imgCollectionView.delegate = self
         imgCollectionView.dataSource = self
+        
+        exerciseTableView.delegate = self
+        exerciseTableView.dataSource = self
         
         let flowLayout: UICollectionViewFlowLayout = UICollectionViewFlowLayout()
         flowLayout.itemSize = CGSize(width: 80, height: 80)
@@ -58,6 +68,21 @@ class ViewController: UIViewController, FSCalendarDelegate, FSCalendarDataSource
         let longPress = UILongPressGestureRecognizer(target: self, action: #selector(handleLongPress(sender:)))
         imgCollectionView.addGestureRecognizer(longPress)
         
+        do {
+            let request = Exercise.fetchRequest()
+            let startFormatter = DateFormatter()
+            startFormatter.dateFormat = "yyyy-MM-dd"
+            let startDate = startFormatter.date(from: selectedDate)
+            let endDate = Date(timeInterval: 60*60*24, since: startDate!)
+            request.predicate = NSPredicate(format: "(%@ <= createdBy) AND (createdBy < %@)", startDate! as CVarArg, endDate as CVarArg)
+            let results = try self.container.viewContext.fetch(request)
+            for element in results {
+//                print("name: \(element.name!)")
+                exerciseData.append(element.name!)
+            }
+        } catch {
+            print(error)
+        }
     }
     
     @objc private func handleLongPress(sender: UILongPressGestureRecognizer) {
@@ -154,7 +179,7 @@ class ViewController: UIViewController, FSCalendarDelegate, FSCalendarDataSource
     // 셀 내용
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "myCell", for: indexPath) as! ImageCollectionViewCell
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "imageCell", for: indexPath) as! ImageCollectionViewCell
         
 //        print("imageData[\(indexPath.row)]: \(imageData[indexPath.row])")
         if let test: UIImage = imageData[indexPath.row]["image"] as? UIImage {
@@ -164,6 +189,20 @@ class ViewController: UIViewController, FSCalendarDelegate, FSCalendarDataSource
         return cell
     }
     
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return exerciseData.count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        
+        let cell = tableView.dequeueReusableCell(withIdentifier: "exerciseCell", for: indexPath) as! ExerciseTableViewCell
+        cell.lblTest.text = exerciseData[indexPath.row]
+        return cell
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+    }
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         
@@ -251,6 +290,70 @@ class ViewController: UIViewController, FSCalendarDelegate, FSCalendarDataSource
         }
         
         imgCollectionView.reloadData()
+        
+        
+        do {
+            let request = Exercise.fetchRequest()
+            let startFormatter = DateFormatter()
+            startFormatter.dateFormat = "yyyy-MM-dd"
+            let startDate = startFormatter.date(from: selectedDate)
+            let endDate = Date(timeInterval: 60*60*24, since: startDate!)
+            request.predicate = NSPredicate(format: "(%@ <= createdBy) AND (createdBy < %@)", startDate! as CVarArg, endDate as CVarArg)
+            let results = try self.container.viewContext.fetch(request)
+            
+            exerciseData = []
+            for element in results {
+//                print("name: \(element.name!)")
+                exerciseData.append(element.name!)
+            }
+            exerciseTableView.reloadData()
+        } catch {
+            print(error)
+        }
+    }
+
+//    @IBAction func addExercise(_ sender: Any) {
+//    }
+
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        self.view.endEditing(true)
+    }
+    
+    @IBAction func showPopup(_ sender: Any) {
+        let storyBoard = UIStoryboard.init(name: "Main", bundle: nil)
+        let popupVC = storyBoard.instantiateViewController(withIdentifier: "popup") as! AddExercisePopupViewController
+        popupVC.modalPresentationStyle = .overCurrentContext
+        popupVC.delegate = self
+        
+        present(popupVC, animated: true, completion: nil)
+    }
+    
+    func pass(data: String) {
+        print("passed \(data)")
+        
+        let exerciseName = data
+        
+        // core data에 저장
+        let entity = NSEntityDescription.entity(forEntityName: "Exercise", in: self.container.viewContext)
+        let exercise = NSManagedObject(entity: entity!, insertInto: self.container.viewContext)
+
+        let createFormatter = DateFormatter()
+        createFormatter.dateFormat = "yyyy-MM-dd"
+        let createdDate = createFormatter.date(from: selectedDate)
+        exercise.setValue(createdDate, forKey: "createdBy")
+
+        exercise.setValue(exerciseName, forKey: "name")
+        do {
+            try self.container.viewContext.save()
+        } catch {
+            print(error)
+        }
+
+        // array에 추가
+        exerciseData.append(exerciseName)
+
+        // 테이블뷰 리로드
+        exerciseTableView.reloadData()
     }
     
 //    // 이벤트 추가
