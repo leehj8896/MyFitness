@@ -11,15 +11,13 @@ class ExerciseViewController: UIViewController, UITableViewDelegate, UITableView
     
 
     @IBOutlet var txtRestTime: UITextField!
-    @IBOutlet var txtWeight: UITextField!
-    @IBOutlet var txtReps: UITextField!
     @IBOutlet var btnStartOrEnd: UIButton!
     @IBOutlet var lblTest: UILabel!
     @IBOutlet var setsTableView: UITableView!
     
     var pageTitle: String?
     
-    var setsData = ["12", "16", "24"]
+    var setsData: [String] = []
     
     
     override func viewDidLoad() {
@@ -49,5 +47,8 @@ class ExerciseViewController: UIViewController, UITableViewDelegate, UITableView
         setsTableView.reloadData()
     }
     
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        self.view.endEditing(true)
+    }
 
 }

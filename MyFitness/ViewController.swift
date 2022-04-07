@@ -312,10 +312,6 @@ class ViewController: UIViewController, FSCalendarDelegate, FSCalendarDataSource
         }
     }
 
-    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        self.view.endEditing(true)
-    }
-    
     @IBAction func showPopup(_ sender: Any) {
         let storyBoard = UIStoryboard.init(name: "Main", bundle: nil)
         let popupVC = storyBoard.instantiateViewController(withIdentifier: "popup") as! AddExercisePopupViewController
