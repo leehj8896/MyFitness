@@ -10,5 +10,5 @@ import CoreData
 
 class ExerciseTableViewCell: UITableViewCell {
 
-    @IBOutlet var lblTest: UILabel!
+    @IBOutlet var lblExerciseCellTest: UILabel!
 }

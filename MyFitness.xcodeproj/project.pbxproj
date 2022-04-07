@@ -10,6 +10,7 @@
 		1E11E61027F9821000AE6A4F /* ExerciseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E11E60F27F9821000AE6A4F /* ExerciseViewController.swift */; };
 		1E2C2E9A27E83F8C00BFC15C /* ImageCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E2C2E9927E83F8C00BFC15C /* ImageCollectionViewCell.swift */; };
 		1E41A8B727F2D4E50010468D /* Model.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 1E41A8B527F2D4E50010468D /* Model.xcdatamodeld */; };
+		1E4F8DD927FDDF6200CFF91C /* SetsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E4F8DD827FDDF6200CFF91C /* SetsTableViewCell.swift */; };
 		1E4FE0D227F3274A001307F2 /* ExerciseTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E4FE0D127F3274A001307F2 /* ExerciseTableViewCell.swift */; };
 		1E5AAC1D2766FAFA0088E65B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E5AAC1C2766FAFA0088E65B /* AppDelegate.swift */; };
 		1E5AAC1F2766FAFA0088E65B /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E5AAC1E2766FAFA0088E65B /* SceneDelegate.swift */; };
@@ -25,6 +26,7 @@
 		1E11E60F27F9821000AE6A4F /* ExerciseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseViewController.swift; sourceTree = "<group>"; };
 		1E2C2E9927E83F8C00BFC15C /* ImageCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCollectionViewCell.swift; sourceTree = "<group>"; };
 		1E41A8B627F2D4E50010468D /* Model.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Model.xcdatamodel; sourceTree = "<group>"; };
+		1E4F8DD827FDDF6200CFF91C /* SetsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetsTableViewCell.swift; sourceTree = "<group>"; };
 		1E4FE0D127F3274A001307F2 /* ExerciseTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseTableViewCell.swift; sourceTree = "<group>"; };
 		1E5AAC192766FAFA0088E65B /* MyFitness.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MyFitness.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1E5AAC1C2766FAFA0088E65B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -93,6 +95,7 @@
 				1E4FE0D127F3274A001307F2 /* ExerciseTableViewCell.swift */,
 				1E11E60F27F9821000AE6A4F /* ExerciseViewController.swift */,
 				1E5EC54827FBFC51001E4021 /* AddExercisePopupViewController.swift */,
+				1E4F8DD827FDDF6200CFF91C /* SetsTableViewCell.swift */,
 			);
 			path = MyFitness;
 			sourceTree = "<group>";
@@ -223,6 +226,7 @@
 				1E5AAC212766FAFA0088E65B /* ViewController.swift in Sources */,
 				1E11E61027F9821000AE6A4F /* ExerciseViewController.swift in Sources */,
 				1E5AAC1D2766FAFA0088E65B /* AppDelegate.swift in Sources */,
+				1E4F8DD927FDDF6200CFF91C /* SetsTableViewCell.swift in Sources */,
 				1E5EC54927FBFC51001E4021 /* AddExercisePopupViewController.swift in Sources */,
 				1E41A8B727F2D4E50010468D /* Model.xcdatamodeld in Sources */,
 				1E4FE0D227F3274A001307F2 /* ExerciseTableViewCell.swift in Sources */,

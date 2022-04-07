@@ -196,7 +196,7 @@ class ViewController: UIViewController, FSCalendarDelegate, FSCalendarDataSource
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let cell = tableView.dequeueReusableCell(withIdentifier: "exerciseCell", for: indexPath) as! ExerciseTableViewCell
-        cell.lblTest.text = exerciseData[indexPath.row]
+        cell.lblExerciseCellTest.text = exerciseData[indexPath.row]
         return cell
     }
     
@@ -357,7 +357,7 @@ class ViewController: UIViewController, FSCalendarDelegate, FSCalendarDataSource
         if segue.identifier == "exerciseDetail" {
             if let i = sender as? Int {
                 let nextVC = segue.destination as! ExerciseViewController
-                nextVC.test = exerciseData[i]
+                nextVC.pageTitle = exerciseData[i]
             }
         }
     }
