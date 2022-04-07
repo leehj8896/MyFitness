@@ -1,5 +1,5 @@
 # MyFitness
-운동 및 식단 기록을 위한 ios 어플리케이션입니다.
+- 운동 및 식단 기록을 위한 ios 어플리케이션입니다.
 ---
 ## 설명
 UIKit, Storyboard, Core Data 
