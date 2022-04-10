@@ -19,6 +19,8 @@
 		1E5AAC262766FAFA0088E65B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1E5AAC252766FAFA0088E65B /* Assets.xcassets */; };
 		1E5AAC292766FAFA0088E65B /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1E5AAC272766FAFA0088E65B /* LaunchScreen.storyboard */; };
 		1E5EC54927FBFC51001E4021 /* AddExercisePopupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E5EC54827FBFC51001E4021 /* AddExercisePopupViewController.swift */; };
+		1EBB5CD128032AAB0092F9A9 /* ExerciseDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EBB5CD028032AAB0092F9A9 /* ExerciseDTO.swift */; };
+		1EBB5CD3280336BA0092F9A9 /* SetDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EBB5CD2280336BA0092F9A9 /* SetDTO.swift */; };
 		3223EDA22B337047F2ABF656 /* Pods_MyFitness.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E451D11DF68CD6BA81AFA824 /* Pods_MyFitness.framework */; };
 /* End PBXBuildFile section */
 
@@ -37,6 +39,8 @@
 		1E5AAC282766FAFA0088E65B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		1E5AAC2A2766FAFA0088E65B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		1E5EC54827FBFC51001E4021 /* AddExercisePopupViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddExercisePopupViewController.swift; sourceTree = "<group>"; };
+		1EBB5CD028032AAB0092F9A9 /* ExerciseDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseDTO.swift; sourceTree = "<group>"; };
+		1EBB5CD2280336BA0092F9A9 /* SetDTO.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SetDTO.swift; sourceTree = "<group>"; };
 		9ABEEF86703C2C797CF3960C /* Pods-MyFitness.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MyFitness.debug.xcconfig"; path = "Target Support Files/Pods-MyFitness/Pods-MyFitness.debug.xcconfig"; sourceTree = "<group>"; };
 		E451D11DF68CD6BA81AFA824 /* Pods_MyFitness.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MyFitness.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F6EBA9BCE298EF3FCDA95D92 /* Pods-MyFitness.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MyFitness.release.xcconfig"; path = "Target Support Files/Pods-MyFitness/Pods-MyFitness.release.xcconfig"; sourceTree = "<group>"; };
@@ -83,6 +87,7 @@
 		1E5AAC1B2766FAFA0088E65B /* MyFitness */ = {
 			isa = PBXGroup;
 			children = (
+				1EBB5CCD28030C420092F9A9 /* DTO */,
 				1E5AAC1C2766FAFA0088E65B /* AppDelegate.swift */,
 				1E5AAC1E2766FAFA0088E65B /* SceneDelegate.swift */,
 				1E5AAC202766FAFA0088E65B /* ViewController.swift */,
@@ -98,6 +103,15 @@
 				1E4F8DD827FDDF6200CFF91C /* SetsTableViewCell.swift */,
 			);
 			path = MyFitness;
+			sourceTree = "<group>";
+		};
+		1EBB5CCD28030C420092F9A9 /* DTO */ = {
+			isa = PBXGroup;
+			children = (
+				1EBB5CD2280336BA0092F9A9 /* SetDTO.swift */,
+				1EBB5CD028032AAB0092F9A9 /* ExerciseDTO.swift */,
+			);
+			path = DTO;
 			sourceTree = "<group>";
 		};
 		B21AA3053AC8A6998FE46AFD /* Pods */ = {
@@ -225,9 +239,11 @@
 			files = (
 				1E5AAC212766FAFA0088E65B /* ViewController.swift in Sources */,
 				1E11E61027F9821000AE6A4F /* ExerciseViewController.swift in Sources */,
+				1EBB5CD3280336BA0092F9A9 /* SetDTO.swift in Sources */,
 				1E5AAC1D2766FAFA0088E65B /* AppDelegate.swift in Sources */,
 				1E4F8DD927FDDF6200CFF91C /* SetsTableViewCell.swift in Sources */,
 				1E5EC54927FBFC51001E4021 /* AddExercisePopupViewController.swift in Sources */,
+				1EBB5CD128032AAB0092F9A9 /* ExerciseDTO.swift in Sources */,
 				1E41A8B727F2D4E50010468D /* Model.xcdatamodeld in Sources */,
 				1E4FE0D227F3274A001307F2 /* ExerciseTableViewCell.swift in Sources */,
 				1E2C2E9A27E83F8C00BFC15C /* ImageCollectionViewCell.swift in Sources */,

@@ -22,7 +22,7 @@ class ViewController: UIViewController, FSCalendarDelegate, FSCalendarDataSource
     var events: [String] = []
     
     var imageData: [[String: Any]] = []
-    var exerciseData: [String] = []
+    var exerciseData: [ExerciseDTO] = []
     var selectedDate: String = ""
     
     override func viewDidLoad() {
@@ -68,18 +68,31 @@ class ViewController: UIViewController, FSCalendarDelegate, FSCalendarDataSource
         let longPress = UILongPressGestureRecognizer(target: self, action: #selector(handleLongPress(sender:)))
         imgCollectionView.addGestureRecognizer(longPress)
         
+        fetchExerciseData(selectedDate)
+        
+    }
+    
+    func fetchExerciseData(_ selectedDate: String){
         do {
+            let df = DateFormatter()
+            df.dateFormat = "yyyy-MM-dd"
+            let startDate = df.date(from: selectedDate)!
+            let endDate = Date(timeInterval: 60*60*24, since: startDate)
+            
             let request = Exercise.fetchRequest()
-            let startFormatter = DateFormatter()
-            startFormatter.dateFormat = "yyyy-MM-dd"
-            let startDate = startFormatter.date(from: selectedDate)
-            let endDate = Date(timeInterval: 60*60*24, since: startDate!)
-            request.predicate = NSPredicate(format: "(%@ <= createdBy) AND (createdBy < %@)", startDate! as CVarArg, endDate as CVarArg)
+            request.predicate = NSPredicate(format: "(%@ <= date) AND (date < %@)", startDate as CVarArg, endDate as CVarArg)
             let results = try self.container.viewContext.fetch(request)
-            for element in results {
-//                print("name: \(element.name!)")
-                exerciseData.append(element.name!)
+            
+            // 데이터 추가
+            exerciseData = []
+            for exercise in results {
+                let exerciseDTO = ExerciseDTO()
+                exerciseDTO.id = exercise.id
+                exerciseDTO.name = exercise.name
+                exerciseDTO.date = exercise.date
+                exerciseData.append(exerciseDTO)
             }
+            exerciseTableView.reloadData()
         } catch {
             print(error)
         }
@@ -195,8 +208,10 @@ class ViewController: UIViewController, FSCalendarDelegate, FSCalendarDataSource
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
+        let exerciseDTO = exerciseData[indexPath.row]
+        
         let cell = tableView.dequeueReusableCell(withIdentifier: "exerciseCell", for: indexPath) as! ExerciseTableViewCell
-        cell.lblExerciseCellTest.text = exerciseData[indexPath.row]
+        cell.lblExerciseCellTest.text = exerciseDTO.name
         return cell
     }
     
@@ -291,25 +306,26 @@ class ViewController: UIViewController, FSCalendarDelegate, FSCalendarDataSource
         
         imgCollectionView.reloadData()
         
+        fetchExerciseData(selectedDate)
         
-        do {
-            let request = Exercise.fetchRequest()
-            let startFormatter = DateFormatter()
-            startFormatter.dateFormat = "yyyy-MM-dd"
-            let startDate = startFormatter.date(from: selectedDate)
-            let endDate = Date(timeInterval: 60*60*24, since: startDate!)
-            request.predicate = NSPredicate(format: "(%@ <= createdBy) AND (createdBy < %@)", startDate! as CVarArg, endDate as CVarArg)
-            let results = try self.container.viewContext.fetch(request)
-            
-            exerciseData = []
-            for element in results {
-//                print("name: \(element.name!)")
-                exerciseData.append(element.name!)
-            }
-            exerciseTableView.reloadData()
-        } catch {
-            print(error)
-        }
+//        do {
+//            let request = Exercise.fetchRequest()
+//            let startFormatter = DateFormatter()
+//            startFormatter.dateFormat = "yyyy-MM-dd"
+//            let startDate = startFormatter.date(from: selectedDate)
+//            let endDate = Date(timeInterval: 60*60*24, since: startDate!)
+//            request.predicate = NSPredicate(format: "(%@ <= createdBy) AND (createdBy < %@)", startDate! as CVarArg, endDate as CVarArg)
+//            let results = try self.container.viewContext.fetch(request)
+//
+//            exerciseData = []
+//            for element in results {
+////                print("name: \(element.name!)")
+//                exerciseData.append(element.name!)
+//            }
+//            exerciseTableView.reloadData()
+//        } catch {
+//            print(error)
+//        }
     }
 
     @IBAction func showPopup(_ sender: Any) {
@@ -321,39 +337,50 @@ class ViewController: UIViewController, FSCalendarDelegate, FSCalendarDataSource
         present(popupVC, animated: true, completion: nil)
     }
     
-    func pass(data: String) {
-        print("passed \(data)")
-        
-        let exerciseName = data
+    func saveExerciseData(_ exerciseDTO: ExerciseDTO) {
         
         // core data에 저장
         let entity = NSEntityDescription.entity(forEntityName: "Exercise", in: self.container.viewContext)
         let exercise = NSManagedObject(entity: entity!, insertInto: self.container.viewContext)
 
-        let createFormatter = DateFormatter()
-        createFormatter.dateFormat = "yyyy-MM-dd"
-        let createdDate = createFormatter.date(from: selectedDate)
-        exercise.setValue(createdDate, forKey: "createdBy")
-
-        exercise.setValue(exerciseName, forKey: "name")
+        exercise.setValue(exerciseDTO.id, forKey: "id")
+        exercise.setValue(exerciseDTO.name, forKey: "name")
+        exercise.setValue(exerciseDTO.date, forKey: "date")
+        
         do {
             try self.container.viewContext.save()
         } catch {
             print(error)
         }
+    }
+    
+    func fromExercisePopup(exerciseName: String) {
+
+        let df = DateFormatter()
+        df.dateFormat = "yyyy-MM-dd"
+        let date = df.date(from: selectedDate)
+        
+        let exerciseDTO = ExerciseDTO()
+        exerciseDTO.id = UUID()
+        exerciseDTO.name = exerciseName
+        exerciseDTO.date = date
+        
+        saveExerciseData(exerciseDTO)
 
         // array에 추가
-        exerciseData.append(exerciseName)
+        exerciseData.append(exerciseDTO)
 
         // 테이블뷰 리로드
         exerciseTableView.reloadData()
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "exerciseDetail" {
-            if let i = sender as? Int {
+        
+        if let i = sender as? Int {
+            let exerciseDTO = exerciseData[i]
+            if segue.identifier == "exerciseDetail" {
                 let nextVC = segue.destination as! ExerciseViewController
-                nextVC.pageTitle = exerciseData[i]
+                nextVC.exerciseDTO = exerciseDTO
             }
         }
     }

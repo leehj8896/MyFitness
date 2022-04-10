@@ -6,7 +6,7 @@
 //
 
 protocol isAbleToReceiveData {
-  func pass(data: String)  //data: string is an example parameter
+  func fromExercisePopup(exerciseName: String)
 }
 
 
@@ -52,7 +52,7 @@ class AddExercisePopupViewController: UIViewController, UIPickerViewDelegate, UI
         print("\(selectedValue) 선택")
         
         if let d = delegate {
-            d.pass(data: selectedValue)
+            d.fromExercisePopup(exerciseName: selectedValue)
         }
         
         self.dismiss(animated: true)

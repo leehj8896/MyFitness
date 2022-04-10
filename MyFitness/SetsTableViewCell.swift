@@ -9,6 +9,8 @@ import UIKit
 
 class SetsTableViewCell: UITableViewCell {
 
+    @IBOutlet var lblWeight: UILabel!
+    @IBOutlet var lblReps: UILabel!
     @IBOutlet var lblTime: UILabel!
     @IBOutlet var btnStart: UIButton!
     
@@ -27,7 +29,6 @@ class SetsTableViewCell: UITableViewCell {
                 btnStart.setTitle("시작", for: .normal)
             }
         }
-        
     }
 
     @objc func timerCallback() {
