@@ -9,16 +9,14 @@ import UIKit
 import FSCalendar
 import CoreData
 
-class ViewController: UIViewController, FSCalendarDelegate, FSCalendarDataSource, UICollectionViewDelegate, UICollectionViewDataSource, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITableViewDelegate, UITableViewDataSource, isAbleToReceiveData {
+class ViewController: UIViewController, FSCalendarDelegate, FSCalendarDataSource, UICollectionViewDelegate, UICollectionViewDataSource, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITableViewDelegate, UITableViewDataSource, isAbleToReceiveData, isAbleToUpdateFoodData {
     
     var container: NSPersistentContainer!
 
     @IBOutlet var calendarView: FSCalendar!
     @IBOutlet var imgCollectionView: UICollectionView!
     @IBOutlet var exerciseTableView: UITableView!
-    
-    let picker = UIImagePickerController()
-    
+        
     var events: [String] = []
     
     var imageData: [[String: Any]] = []
@@ -48,28 +46,17 @@ class ViewController: UIViewController, FSCalendarDelegate, FSCalendarDataSource
         let flowLayout: UICollectionViewFlowLayout = UICollectionViewFlowLayout()
         flowLayout.itemSize = CGSize(width: 80, height: 80)
         imgCollectionView.collectionViewLayout = flowLayout
-        
-        picker.delegate = self
                 
         let formatter = DateFormatter()
         formatter.dateFormat = "yyyy-MM-dd"
         let current_date_string = formatter.string(from: Date())
         selectedDate = current_date_string
-    
-        let fileNames = getImageFileNames()
-//        print("filenames: \(fileNames)")
-        for fileName in fileNames {
-            if let image = getSavedImage(named: fileName) {
-                let data: [String: Any] = ["name": fileName, "image": image]
-                imageData.append(data)
-            }
-        }
-        
+            
         let longPress = UILongPressGestureRecognizer(target: self, action: #selector(handleLongPress(sender:)))
         imgCollectionView.addGestureRecognizer(longPress)
         
+        fetchFoodData()
         fetchExerciseData(selectedDate)
-        
     }
     
     func fetchExerciseData(_ selectedDate: String){
@@ -96,6 +83,18 @@ class ViewController: UIViewController, FSCalendarDelegate, FSCalendarDataSource
         } catch {
             print(error)
         }
+    }
+    
+    func fetchFoodData() {
+        imageData = []
+        let fileNames = getImageFileNames()
+        for fileName in fileNames {
+            if let image = getSavedImage(named: fileName) {
+                let data: [String: Any] = ["name": fileName, "image": image]
+                imageData.append(data)
+            }
+        }
+        imgCollectionView.reloadData()
     }
     
     @objc private func handleLongPress(sender: UILongPressGestureRecognizer) {
@@ -172,16 +171,10 @@ class ViewController: UIViewController, FSCalendarDelegate, FSCalendarDataSource
     
     
     @IBAction func btnAddImage(_ sender: Any) {
-        picker.sourceType = .camera
-//        camera.allowsEditing = true
-//        camera.cameraDevice = .rear
-//        camera.cameraCaptureMode = .photo
-        present(picker, animated: true, completion: nil)
+        
     }
     
     @IBAction func btnAddImageFromAlbum(_ sender: Any) {
-        picker.sourceType = .photoLibrary
-        present(picker, animated: true, completion: nil)
     }
     
     // 셀 개수
@@ -219,28 +212,6 @@ class ViewController: UIViewController, FSCalendarDelegate, FSCalendarDataSource
         performSegue(withIdentifier: "exerciseDetail", sender: indexPath.row)
     }
     
-    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
-        
-        if let image = info[UIImagePickerController.InfoKey.originalImage] as? UIImage{
-
-            let formatter = DateFormatter()
-            formatter.dateFormat = "HH-mm-ss"
-            let current_date_string = formatter.string(from: Date())
-            
-            imageData.append(["name": "\(current_date_string).png", "image": image])
-            
-            saveImage(image: image, named: current_date_string)
-
-            imgCollectionView.reloadData()
-
-//            print("사진 가져옴")
-        }else{
-//            print("사진 없음")
-        }
-        
-        picker.dismiss(animated: true, completion: nil)
-
-    }
     
     func saveImage(image: UIImage, named: String) {
         
@@ -295,37 +266,19 @@ class ViewController: UIViewController, FSCalendarDelegate, FSCalendarDataSource
         let current_date_string = formatter.string(from: date)
         selectedDate = current_date_string
         
-        imageData = []
-        let fileNames = getImageFileNames()
-        for fileName in fileNames {
-            if let image = getSavedImage(named: fileName) {
-                let data: [String: Any] = ["name": fileName, "image": image]
-                imageData.append(data)
-            }
-        }
-        
-        imgCollectionView.reloadData()
+//        imageData = []
+//        let fileNames = getImageFileNames()
+//        for fileName in fileNames {
+//            if let image = getSavedImage(named: fileName) {
+//                let data: [String: Any] = ["name": fileName, "image": image]
+//                imageData.append(data)
+//            }
+//        }
+//
+//        imgCollectionView.reloadData()
+        fetchFoodData()
         
         fetchExerciseData(selectedDate)
-        
-//        do {
-//            let request = Exercise.fetchRequest()
-//            let startFormatter = DateFormatter()
-//            startFormatter.dateFormat = "yyyy-MM-dd"
-//            let startDate = startFormatter.date(from: selectedDate)
-//            let endDate = Date(timeInterval: 60*60*24, since: startDate!)
-//            request.predicate = NSPredicate(format: "(%@ <= createdBy) AND (createdBy < %@)", startDate! as CVarArg, endDate as CVarArg)
-//            let results = try self.container.viewContext.fetch(request)
-//
-//            exerciseData = []
-//            for element in results {
-////                print("name: \(element.name!)")
-//                exerciseData.append(element.name!)
-//            }
-//            exerciseTableView.reloadData()
-//        } catch {
-//            print(error)
-//        }
     }
 
     @IBAction func showPopup(_ sender: Any) {
@@ -374,6 +327,7 @@ class ViewController: UIViewController, FSCalendarDelegate, FSCalendarDataSource
         exerciseTableView.reloadData()
     }
     
+    // 데이터 주는 코드
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         
         if let i = sender as? Int {
@@ -383,7 +337,27 @@ class ViewController: UIViewController, FSCalendarDelegate, FSCalendarDataSource
                 nextVC.exerciseDTO = exerciseDTO
             }
         }
+        
+        if segue.identifier == "addFood" {
+            let nextVC = segue.destination as! AddFoodViewController
+            nextVC.selectedDate = selectedDate
+        }
+
     }
+    
+    func reloadFoodData() {
+        fetchFoodData()
+    }
+    
+    @IBAction func btnAddFood(_ sender: UIButton) {
+        
+        let storyBoard = UIStoryboard.init(name: "Main", bundle: nil)
+        let addFoodVC = storyBoard.instantiateViewController(withIdentifier: "addFood") as! AddFoodViewController
+        self.navigationController?.pushViewController(addFoodVC, animated: true)
+        addFoodVC.delegate = self
+        addFoodVC.selectedDate = self.selectedDate
+    }
+    
     
 //    // 이벤트 추가
 //    func calendar(_ calendar: FSCalendar, numberOfEventsFor date: Date) -> Int {

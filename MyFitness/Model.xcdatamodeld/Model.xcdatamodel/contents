@@ -10,8 +10,8 @@
     <entity name="Food" representedClassName="Food" syncable="YES" codeGenerationType="class">
         <attribute name="calorie" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="date" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
-        <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
-        <attribute name="imageUrl" optional="YES" attributeType="String"/>
+        <attribute name="fileName" optional="YES" attributeType="String"/>
+        <attribute name="foodName" optional="YES" attributeType="String"/>
     </entity>
     <entity name="OneSet" representedClassName="OneSet" syncable="YES" codeGenerationType="class">
         <attribute name="exerciseId" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
